@@ -42,7 +42,7 @@ pub fn create_router(db_pool: PgPool, redis_manager: ConnectionManager) -> Route
         .route("/health/ready", get(health::readiness))
         .route("/health/startup", get(health::startup))
         .route("/metrics", get(health::metrics))
-        // API v1 routes (to be implemented)
+        // API v1 routes
         .nest("/v1", v1_routes())
         // Add middleware
         .layer(TraceLayer::new_for_http())
@@ -59,6 +59,7 @@ fn v1_routes() -> Router<AppState> {
         .route("/auth/refresh", post(|| async { "Auth refresh endpoint" }))
         .route("/identities", post(|| async { "Create identity endpoint" }))
         .route("/identities/:id", get(|| async { "Get identity endpoint" }))
+        .route("/identities/:id/delegation-chain", get(identities::get_delegation_chain))
         .route("/authz/check", post(|| async { "Check authorization endpoint" }))
         .route("/policies", get(|| async { "List policies endpoint" }))
 }
