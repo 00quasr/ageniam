@@ -1,0 +1,26 @@
+# Production Configuration Overrides
+
+[server]
+host = "0.0.0.0"
+port = 8080
+workers = 8
+
+[database]
+max_connections = 50
+min_connections = 10
+
+[redis]
+pool_size = 50
+
+[audit]
+storage_backends = ["postgres", "s3"]
+
+[observability]
+log_level = "info"
+log_format = "json"
+tracing_enabled = true
+
+[security]
+tls_enabled = true
+# Set via environment variables:
+# TLS_CERT_PATH and TLS_KEY_PATH

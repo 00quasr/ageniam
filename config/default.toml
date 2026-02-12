@@ -1,0 +1,74 @@
+# Agent IAM Default Configuration
+
+[server]
+host = "0.0.0.0"
+port = 8080
+workers = 4
+
+[database]
+url = "postgresql://postgres:postgres@localhost:5432/agent_iam"
+max_connections = 10
+min_connections = 2
+acquire_timeout_seconds = 30
+idle_timeout_seconds = 600
+
+[redis]
+url = "redis://localhost:6379"
+pool_size = 10
+connection_timeout_seconds = 5
+
+[auth]
+# JWT settings for user tokens
+jwt_issuer = "https://agent-iam.example.com"
+jwt_audience = "https://api.agent-iam.example.com"
+jwt_expiration_seconds = 900  # 15 minutes
+refresh_token_expiration_seconds = 2592000  # 30 days
+
+# Biscuit settings for agent tokens
+biscuit_root_key_id = "root-2026-02"
+
+# Password policy
+password_min_length = 12
+password_require_uppercase = true
+password_require_lowercase = true
+password_require_digit = true
+password_require_special = true
+max_login_attempts = 5
+lockout_duration_seconds = 900  # 15 minutes
+
+[rate_limit]
+# Default rate limits
+default_requests_per_minute = 100
+default_requests_per_hour = 1000
+default_requests_per_day = 10000
+auth_requests_per_minute = 10  # Per IP
+
+[audit]
+enabled = true
+async_batch_size = 100
+async_flush_interval_seconds = 5
+storage_backends = ["postgres"]  # Options: "postgres", "s3", "elasticsearch"
+
+[crypto]
+# Key rotation
+key_rotation_days = 30
+key_overlap_days = 7
+
+[observability]
+log_level = "info"
+log_format = "json"  # Options: "json", "pretty"
+metrics_enabled = true
+tracing_enabled = false
+
+[security]
+# TLS settings
+tls_enabled = false
+tls_cert_path = ""
+tls_key_path = ""
+
+# CORS
+cors_enabled = true
+cors_allowed_origins = ["http://localhost:3000"]
+cors_allowed_methods = ["GET", "POST", "PUT", "DELETE", "PATCH"]
+cors_allowed_headers = ["Authorization", "Content-Type"]
+cors_max_age_seconds = 3600
